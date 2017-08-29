@@ -32,7 +32,7 @@ additionalWidth=3;
 topFinishingLayer=0.3;
 tapeGuideUpperOverhang=0.6;
 //lower values make the spring smaller thus less force on tape
-springWidth=1.4;
+springWidth=1.2;
 springSkew=1.2;
 springClearance=0.4;
 
