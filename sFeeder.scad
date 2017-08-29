@@ -8,7 +8,7 @@ Author: Michael
 //How wide is the tape?
 tapeWidth=8; // [8, 12, 16, 24, 36, 48, 72]
 //How many feeder to print ganged
-numberOfFeeders=4; // [1:1:20]
+numberOfFeeders=2; // [1:1:20]
 //Overall length of feeder?
 feederLength=180;
 //Height of tape's bottom side above bed
@@ -32,9 +32,9 @@ additionalWidth=3;
 topFinishingLayer=0.3;
 tapeGuideUpperOverhang=0.6;
 //lower values make the spring smaller thus less force on tape
-springWidth=1.6;
-springSkew=2;
-springClearance=0.5;
+springWidth=1.4;
+springSkew=1.2;
+springClearance=0.4;
 
 overallWidth=tapeWidth+additionalWidth;
 overallHeight=tapeLayerHeight+tapeHeightClearance+tapeGuideUpperOverhang+topFinishingLayer;
@@ -90,9 +90,9 @@ module feeder_body() {
                         [0,0],
                         [overallWidth,0],
                     
-                        //right arm way up (outer part)
+                        //right arm way up ("spring", outer part)
                         [overallWidth,overallHeight*0.3],
-                        [overallWidth-springSkew,tapeLayerHeight-5],
+                        [overallWidth-springSkew,tapeLayerHeight-3],
                         [overallWidth-springClearance,tapeLayerHeight],
                     
                         //right arm tape guide
@@ -103,8 +103,8 @@ module feeder_body() {
                         [tapeXcenter+tapeWidth/2+tapeClearance,tapeLayerHeight],
                         [tapeXcenter+tapeWidth/2+tapeClearance-tapeSupportHoleSide,tapeLayerHeight],
                     
-                        //right arm way down (inner part)
-                        [overallWidth-springSkew-springWidth,tapeLayerHeight-5],
+                        //right arm way down ("spring", inner part)
+                        [overallWidth-springSkew-springWidth,tapeLayerHeight-3],
                         [overallWidth-springWidth,overallHeight*0.3],
                         [tapeXcenter+tapeWidth/2,bodyHeight],
                         
