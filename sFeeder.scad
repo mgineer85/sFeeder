@@ -18,22 +18,23 @@ tapeLayerHeight=22.8;
 /* [advanced] */
 
 //controls the force to keep the tape in place. lower value higher force and though friction
-tapeClearance=-0.1;     // [-0.5:0.1:0.5]
+tapeClearance=-0.1;     // [-0.5:0.05:0.5]
 bodyHeight=6;
 tapeSupportHoleSide=2.8;
 tapeSupportNonHoleSide=0.9;
+//usually don't need to customize the following
+tapeHeightClearance=0.9;
 
 
 /* [expert] */
-//usually don't need to customize the following
-tapeHeightClearance=0.6;
-//higher values make the arms stronger
+//higher values make the left arm stronger
 additionalWidth=3;
 topFinishingLayer=0.3;
-tapeGuideUpperOverhang=0.6;
-//lower values make the spring smaller thus less force on tape
-springWidth=1.2;
+tapeGuideUpperOverhang=0.4;
+//lower values make the spring smaller thus less force on tape, should be slightly less than a multiple of extrusion-width
+springWidth=1.1;
 springSkew=1.2;
+//if two tapeloaded lanes touch each other raise this value a little
 springClearance=0.4;
 
 overallWidth=tapeWidth+additionalWidth;
@@ -91,7 +92,7 @@ module feeder_body() {
                         [overallWidth,0],
                     
                         //right arm way up ("spring", outer part)
-                        [overallWidth,overallHeight*0.3],
+                        [overallWidth,bodyHeight*0.6],
                         [overallWidth-springSkew,tapeLayerHeight-3],
                         [overallWidth-springClearance,tapeLayerHeight],
                     
@@ -105,8 +106,8 @@ module feeder_body() {
                     
                         //right arm way down ("spring", inner part)
                         [overallWidth-springSkew-springWidth,tapeLayerHeight-3],
-                        [overallWidth-springWidth,overallHeight*0.3],
-                        [tapeXcenter+tapeWidth/2,bodyHeight],
+                        [overallWidth-springWidth,bodyHeight*0.6],
+                        [overallWidth-springWidth-0.5,bodyHeight],
                         
                         //base (inner part)
                         [tapeXcenter-tapeWidth/2+tapeSupportNonHoleSide,bodyHeight],
