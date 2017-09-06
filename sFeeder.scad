@@ -32,7 +32,7 @@ additionalWidth=3;
 topFinishingLayer=0.3;
 tapeGuideUpperOverhang=0.4;
 //lower values make the spring smaller thus less force on tape, should be slightly less than a multiple of extrusion-width
-springWidth=1.1;
+springWidth=1.3;
 springSkew=1.2;
 //if two tapeloaded lanes touch each other raise this value a little
 springClearance=0.4;
@@ -107,7 +107,7 @@ module feeder_body() {
                         //right arm way down ("spring", inner part)
                         [overallWidth-springSkew-springWidth,tapeLayerHeight-3],
                         [overallWidth-springWidth,bodyHeight*0.6],
-                        [overallWidth-springWidth-0.5,bodyHeight],
+                        [overallWidth-springWidth-1,bodyHeight],
                         
                         //base (inner part)
                         [tapeXcenter-tapeWidth/2+tapeSupportNonHoleSide,bodyHeight],
@@ -140,17 +140,22 @@ module feeder_body() {
 module bottom_fixation(pos_y) {
     layerForBridging=0.3;
     cutoutbelow=3.5;
-    
-    translate([tapeXcenter,cutoutbelow+layerForBridging,pos_y])
-            rotate([-90,0,0])
-                cylinder(h = bodyHeight+1, r=3.5/2, $fn=20);
-    
-    translate([tapeXcenter,cutoutbelow,pos_y])
-            rotate([90,0,0])
-                cylinder(h = 10, r=6.0/2, $fn=20);
-    
-    translate([tapeXcenter,bodyHeight-1,pos_y])
-            rotate([-90,0,0])
-                cylinder(h = 2.1, r=6.0/2, $fn=20);
-    
+    union() {
+        translate([tapeXcenter,bodyHeight-1,pos_y])
+                rotate([-90,0,0])
+                    cylinder(h = 2.1, r=6.0/2, $fn=20);
+        
+        translate([tapeXcenter,cutoutbelow+layerForBridging,pos_y])
+                rotate([-90,0,0])
+                    cylinder(h = bodyHeight+1, r=3.5/2, $fn=20);
+        
+        translate([tapeXcenter,cutoutbelow,pos_y])
+                rotate([90,0,0])
+                    cylinder(h = 10, r=6.0/2, $fn=20);
+        
+        //chamfer
+        translate([tapeXcenter,0.3,pos_y])
+                rotate([90,0,0])
+                    cylinder(h = 0.3, r1=6.0/2, r2=6.3/2, $fn=20);
+    }
 }
