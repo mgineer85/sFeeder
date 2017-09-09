@@ -1,6 +1,8 @@
 /*
 Author: Michael
-20170829
+
+2017/09/09
+
 */
 
 /* [basic parameters] */
@@ -13,7 +15,8 @@ numberOfFeeders=2; // [1:1:20]
 feederLength=180;
 //Height of tape's bottom side above bed
 tapeLayerHeight=22.8;
-
+//To identify the lanes in OpenPnP use unique IDs. Example is for Bank1 Feeder A...T.
+laneIds=["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","1L","1M","1N","1O","1P","1Q","1R","1S","1T"];
 
 /* [advanced] */
 
@@ -62,7 +65,7 @@ module gang_feeder() {
             //stack up feeders
             for(i=[0:1:numberOfFeeders-1]) {
                 translate([i*(tapeWidth+additionalWidth),0,0]) 
-                    feeder_body();
+                    feeder_body(i);
             }
             
             //cover on right side
@@ -79,7 +82,7 @@ module feeder_cover() {
     cube([2,feederLength,overallHeight]);
 }
 
-module feeder_body() {
+module feeder_body(feederNo) {
     translate([0,feederLength,0]) {
         rotate([90,0,0]) {
             difference() {
@@ -128,6 +131,18 @@ module feeder_body() {
                     ]);
                 }
                 
+                translate([additionalWidth,bodyHeight-0.9,feederLength-2])
+                    rotate([90,90,180])
+                        identification_mark(laneIds[feederNo],"left","top");
+                
+                translate([tapeXcenter-1,bodyHeight-0.9,feederLength])
+                    rotate([0,0,0])
+                        identification_mark(laneIds[feederNo],"center","top");
+                
+                translate([tapeXcenter+1,bodyHeight-0.9,0])
+                    rotate([0,180,0])
+                        identification_mark(laneIds[feederNo],"center","top");
+                
                 //3 registration points (for magnets, bolts or to screw from top)
                 bottom_fixation(feederLength/2);
                 bottom_fixation(15);
@@ -137,6 +152,16 @@ module feeder_body() {
     }
 }
 
+module identification_mark(feederIdentifier,_halign,_valign) {
+
+    if(feederIdentifier!=undef) {
+        linear_extrude(height=.91) {
+            text(str(feederIdentifier),font="Liberation Sans:style=Bold", size=4, valign=_valign, halign=_halign);
+        }
+    }
+                
+}
+            
 module bottom_fixation(pos_y) {
     layerForBridging=0.3;
     cutoutbelow=3.5;
