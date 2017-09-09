@@ -15,8 +15,8 @@ numberOfFeeders=2; // [1:1:20]
 feederLength=180;
 //Height of tape's bottom side above bed
 tapeLayerHeight=22.8;
-//To identify the lanes in OpenPnP use unique IDs. Example is for Bank1 Feeder A...T.
-laneIds=["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","1L","1M","1N","1O","1P","1Q","1R","1S","1T"];
+//Bank ID: To identify the feeder in OpenPnP unique IDs for each bank are built and embossed into the ganged feeder. -1: no identifier.
+bankID=1; //[-1:1:9]
 
 /* [advanced] */
 
@@ -25,7 +25,7 @@ tapeClearance=-0.1;     // [-0.5:0.05:0.5]
 bodyHeight=6;
 tapeSupportHoleSide=2.8;
 tapeSupportNonHoleSide=0.9;
-//usually don't need to customize the following
+//height before the overhangs above the tape set in
 tapeHeightClearance=0.9;
 
 
@@ -43,7 +43,6 @@ springClearance=0.4;
 overallWidth=tapeWidth+additionalWidth;
 overallHeight=tapeLayerHeight+tapeHeightClearance+tapeGuideUpperOverhang+topFinishingLayer;
 tapeXcenter=(overallWidth/2)+tapeClearance/2;
-
 
 //make the feeders
 gang_feeder();
@@ -133,15 +132,15 @@ module feeder_body(feederNo) {
                 
                 translate([additionalWidth,bodyHeight-0.9,feederLength-2])
                     rotate([90,90,180])
-                        identification_mark(laneIds[feederNo],"left","top");
+                        identification_mark(feederNo,"left","top");
                 
-                translate([tapeXcenter-1,bodyHeight-0.9,feederLength])
+                translate([tapeXcenter,bodyHeight-0.9,feederLength-0.9])
                     rotate([0,0,0])
-                        identification_mark(laneIds[feederNo],"center","top");
+                        identification_mark(feederNo,"center","top");
                 
-                translate([tapeXcenter+1,bodyHeight-0.9,0])
+                translate([tapeXcenter,bodyHeight-0.9,0.9])
                     rotate([0,180,0])
-                        identification_mark(laneIds[feederNo],"center","top");
+                        identification_mark(feederNo,"center","top");
                 
                 //3 registration points (for magnets, bolts or to screw from top)
                 bottom_fixation(feederLength/2);
@@ -152,11 +151,11 @@ module feeder_body(feederNo) {
     }
 }
 
-module identification_mark(feederIdentifier,_halign,_valign) {
+module identification_mark(feederNo,_halign,_valign) {
 
-    if(feederIdentifier!=undef) {
+    if(bankID!=-1) {
         linear_extrude(height=.91) {
-            text(str(feederIdentifier),font="Liberation Sans:style=Bold", size=4, valign=_valign, halign=_halign);
+            text( str(bankID, chr(feederNo+65) ),font=":style=Bold", size=4, valign=_valign, halign=_halign);
         }
     }
                 
