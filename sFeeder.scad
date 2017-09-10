@@ -130,9 +130,24 @@ module feeder_body(feederNo) {
                     ]);
                 }
                 
+                //direction of travel while picking with OpenPnP
+                if(feederLength>=100) {
+                    for (i=[0:1:3]) {
+                        translate([additionalWidth+3/2+0.5,bodyHeight+0.1,feederLength-25-(i*6)])
+                            rotate([90,90,0])
+                                linear_extrude(1)
+                                    circle(3,$fn=3);
+                    }
+                }
+                
+                //4 identification marks
                 translate([additionalWidth,bodyHeight-0.9,feederLength-2])
                     rotate([90,90,180])
                         identification_mark(feederNo,"left","top");
+                
+                translate([additionalWidth,bodyHeight-0.9,2])
+                    rotate([90,90,180])
+                        identification_mark(feederNo,"right","top");
                 
                 translate([tapeXcenter,bodyHeight-0.9,feederLength-0.9])
                     rotate([0,0,0])
