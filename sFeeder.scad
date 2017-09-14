@@ -105,6 +105,7 @@ module feeder_body(feederNo) {
                         [tapeXcenter+tapeWidth/2+tapeClearance,tapeLayerHeight+tapeHeightClearance],
                         [tapeXcenter+tapeWidth/2+tapeClearance,tapeLayerHeight],
                         [tapeXcenter+tapeWidth/2+tapeClearance-tapeSupportHoleSide,tapeLayerHeight],
+                        [tapeXcenter+tapeWidth/2+tapeClearance-tapeSupportHoleSide,tapeLayerHeight-0.6],
                     
                         //right arm way down ("spring", inner part)
                         [overallWidth-springSkew-springWidth,tapeLayerHeight-3],
@@ -156,6 +157,11 @@ module feeder_body(feederNo) {
                 translate([tapeXcenter,bodyHeight-0.9,0.9])
                     rotate([0,180,0])
                         identification_mark(feederNo,"center","top");
+                
+                //reference hole
+                translate([tapeXcenter+tapeWidth/2+tapeClearance-1.75,tapeLayerHeight,feederLength-4])
+                    rotate([90,90,0])
+                        cylinder(h=0.6,d=1.4,center=false,$fn=20);
                 
                 //3 registration points (for magnets, bolts or to screw from top)
                 bottom_fixation(feederLength/2);
