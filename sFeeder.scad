@@ -17,6 +17,10 @@ feederLength=180;
 tapeLayerHeight=22.8;
 //Bank ID: To identify the feeder in OpenPnP unique IDs for each bank are built and embossed into the ganged feeder. -1: no identifier.
 bankID=1; //[-1:1:9]
+//diameter of pockets on the side to put a magnet in
+magnetDiameter=6;
+//height of the pocket for the magnet
+magnetHeight=3;
 
 /* [advanced] */
 
@@ -56,10 +60,7 @@ module gang_feeder() {
     
     difference() {
         union() {
-            //cover on left side
-            *translate([-2,0,0]) {
-                feeder_cover();
-            }
+
                 
             //stack up feeders
             for(i=[0:1:numberOfFeeders-1]) {
@@ -67,13 +68,27 @@ module gang_feeder() {
                     feeder_body(i);
             }
             
-            //cover on right side
-            *translate([(numberOfFeeders)*(tapeWidth+additionalWidth),0,0]) {
-                feeder_cover();
+            
+        }
+        
+        //magnet pockets
+        for(j=[0:1:2]) {
+            //magnet pockets right side
+            translate([0,j*((feederLength-49)/2)+24.5,0]) {
+                translate([(numberOfFeeders)*(tapeWidth+additionalWidth),0,0 ]) {
+                    magnetic_fixation_pocket(0,feederLength/2);
+                }
+            }
+            
+        }
+        
+        for(j=[0:1:3]) {
+            translate([0,j*((feederLength-15)/3)+7.5,0]) {
+                //magnet pockets left side
+                rotate([0,0,180])
+                    magnetic_fixation_pocket(0,feederLength/2);
             }
         }
-    
-
     }
 }
 
@@ -94,7 +109,7 @@ module feeder_body(feederNo) {
                         [overallWidth,0],
                     
                         //right arm way up ("spring", outer part)
-                        [overallWidth,bodyHeight*0.6],
+                        [overallWidth,bodyHeight*0.8],
                         [overallWidth-springSkew,tapeLayerHeight-3],
                         [overallWidth-springClearance,tapeLayerHeight],
                     
@@ -109,7 +124,7 @@ module feeder_body(feederNo) {
                     
                         //right arm way down ("spring", inner part)
                         [overallWidth-springSkew-springWidth,tapeLayerHeight-3],
-                        [overallWidth-springWidth,bodyHeight*0.6],
+                        [overallWidth-springWidth,bodyHeight*0.8],
                         [overallWidth-springWidth-1,bodyHeight],
                         
                         //base (inner part)
@@ -164,9 +179,11 @@ module feeder_body(feederNo) {
                         cylinder(h=0.6,d=1.4,center=false,$fn=20);
                 
                 //3 registration points (for magnets, bolts or to screw from top)
-                bottom_fixation(feederLength/2);
-                bottom_fixation(15);
-                bottom_fixation(feederLength-15);
+                //bottom_fixation(feederLength/2);
+                bottom_fixation(17);
+                bottom_fixation(feederLength-17);
+                
+
             }
         }
     }
@@ -181,6 +198,35 @@ module identification_mark(feederNo,_halign,_valign) {
     }
                 
 }
+
+module magnetic_fixation_pocket() {
+    layerBelow=0.25;
+    magnetInset=1;
+    magnetDiameterOversizedFor3dPrinting=magnetDiameter+0.2;
+    
+    translate([0,0,layerBelow]) {
+            union() {
+                translate([-(magnetDiameterOversizedFor3dPrinting)/2-magnetInset,0,0])
+                    cylinder(d=magnetDiameterOversizedFor3dPrinting,h=magnetHeight+0.3,$fn=20);
+                
+                hull() {
+                    translate([-(magnetDiameterOversizedFor3dPrinting)/2-magnetInset,0,0])
+                        cylinder(d=magnetDiameterOversizedFor3dPrinting-1.4,h=magnetHeight+0.3,$fn=20);
+                    translate([0,0,(magnetHeight+0.3)/2])
+                        cube([0.1,magnetDiameterOversizedFor3dPrinting+0.4,magnetHeight+0.3],center=true);
+                }
+                
+                translate([-(magnetDiameterOversizedFor3dPrinting)/2-magnetInset,0,0]) {
+                    difference() {
+                        cylinder(d=magnetDiameterOversizedFor3dPrinting+3,h=magnetHeight+0.3,$fn=20);
+                        cylinder(d=magnetDiameterOversizedFor3dPrinting+2,h=magnetHeight+0.3,$fn=20);
+                    }
+                }
+            }
+        translate([-(magnetDiameterOversizedFor3dPrinting-magnetInset+1)/2-magnetInset,0,0])
+            cube([magnetDiameterOversizedFor3dPrinting,1,1],center=true);
+    }
+}
             
 module bottom_fixation(pos_y) {
     layerForBridging=0.3;
@@ -190,16 +236,17 @@ module bottom_fixation(pos_y) {
                 rotate([-90,0,0])
                     cylinder(h = 2.1, r=6.0/2, $fn=20);
         
-        translate([tapeXcenter,cutoutbelow+layerForBridging,pos_y])
+        translate([tapeXcenter,-0.1,pos_y])
                 rotate([-90,0,0])
                     cylinder(h = bodyHeight+1, r=3.5/2, $fn=20);
         
-        translate([tapeXcenter,cutoutbelow,pos_y])
+        //old pocket below feeder for magnet
+        *translate([tapeXcenter,cutoutbelow,pos_y])
                 rotate([90,0,0])
                     cylinder(h = 10, r=6.0/2, $fn=20);
         
         //chamfer
-        translate([tapeXcenter,0.3,pos_y])
+        *translate([tapeXcenter,0.3,pos_y])
                 rotate([90,0,0])
                     cylinder(h = 0.3, r1=6.0/2, r2=6.3/2, $fn=20);
     }
