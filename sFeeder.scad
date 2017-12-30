@@ -9,6 +9,8 @@ Author: Michael
 
 //How wide is the tape?
 tapeWidth=8; // [8, 12, 16, 24, 36, 48, 72]
+//Optimize for Plastic or Paper tape? Plastic tapes fit in Paper, but not reverse. Plastic tapes may be too loose in paper feeder.
+tapeHeight=0.9; // [0.9:paper,0.3:plastic]
 //How many feeder to print ganged
 numberOfFeeders=2; // [1:1:20]
 //Overall length of feeder?
@@ -29,8 +31,7 @@ tapeClearance=-0.3;     // [-0.5:0.05:0.5]
 bodyHeight=6;
 tapeSupportHoleSide=2.8;
 tapeSupportNonHoleSide=0.9;
-//height before the overhangs above the tape set in
-tapeHeightClearance=0.9;
+
 
 
 /* [expert] */
@@ -45,8 +46,10 @@ springSkew=1.2;
 springClearance=0.4;
 
 overallWidth=tapeWidth+additionalWidth;
-overallHeight=tapeLayerHeight+tapeHeightClearance+tapeGuideUpperOverhang+topFinishingLayer;
+overallHeight=tapeLayerHeight+tapeHeight+tapeGuideUpperOverhang+topFinishingLayer;
 tapeXcenter=(overallWidth/2)+tapeClearance/2;
+
+    
 
 //make the feeders
 gang_feeder();
@@ -57,7 +60,7 @@ gang_feeder();
 
 
 module gang_feeder() {
-    
+
     difference() {
         union() {
 
@@ -116,8 +119,8 @@ module feeder_body(feederNo) {
                         //right arm tape guide
                         [overallWidth-springClearance,overallHeight],
                         [tapeXcenter+tapeWidth/2+tapeClearance-tapeGuideUpperOverhang,overallHeight],
-                        [tapeXcenter+tapeWidth/2+tapeClearance-tapeGuideUpperOverhang,tapeLayerHeight+tapeHeightClearance+tapeGuideUpperOverhang],
-                        [tapeXcenter+tapeWidth/2+tapeClearance,tapeLayerHeight+tapeHeightClearance],
+                        [tapeXcenter+tapeWidth/2+tapeClearance-tapeGuideUpperOverhang,tapeLayerHeight+tapeHeight+tapeGuideUpperOverhang],
+                        [tapeXcenter+tapeWidth/2+tapeClearance,tapeLayerHeight+tapeHeight],
                         [tapeXcenter+tapeWidth/2+tapeClearance,tapeLayerHeight],
                         [tapeXcenter+tapeWidth/2+tapeClearance-tapeSupportHoleSide,tapeLayerHeight],
                         [tapeXcenter+tapeWidth/2+tapeClearance-tapeSupportHoleSide,tapeLayerHeight-0.6],
@@ -135,8 +138,8 @@ module feeder_body(feederNo) {
                         
                         //left arm tape guide
                         [tapeXcenter-tapeWidth/2,tapeLayerHeight],
-                        [tapeXcenter-tapeWidth/2,tapeLayerHeight+tapeHeightClearance],
-                        [tapeXcenter-tapeWidth/2+tapeGuideUpperOverhang,tapeLayerHeight+tapeHeightClearance+tapeGuideUpperOverhang],
+                        [tapeXcenter-tapeWidth/2,tapeLayerHeight+tapeHeight],
+                        [tapeXcenter-tapeWidth/2+tapeGuideUpperOverhang,tapeLayerHeight+tapeHeight+tapeGuideUpperOverhang],
                         [tapeXcenter-tapeWidth/2+tapeGuideUpperOverhang,overallHeight],
                         
                         //left arm down (outer part)
