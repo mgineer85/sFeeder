@@ -32,7 +32,7 @@ magnetPocketsLeftSide=4;
 
 /* [advanced] */
 
-//Controls the force to keep the tape in place. lower value higher force and though friction
+//Controls the force to keep the tape in place. Lower value higher force and though friction
 tapeClearance=-0.3;     // [-0.5:0.05:0.5]
 bodyHeight=6;
 tapeSupportHoleSide=2.8;
@@ -88,7 +88,7 @@ module gang_feeder() {
         
         //magnet pockets
         
-        echo((feederLength-2*separationRightSide)/(magnetPocketsRightSide-1))
+        //echo((feederLength-2*separationRightSide)/(magnetPocketsRightSide-1))
         for(j=[0:1:magnetPocketsRightSide-1]) {
             //magnet pockets right side
             translate([0,j*((feederLength-2*separationRightSide)/(magnetPocketsRightSide-1))+separationRightSide,0]) {
@@ -100,7 +100,7 @@ module gang_feeder() {
             
         }
         
-        echo((feederLength-2*separationLeftSide)/(magnetPocketsLeftSide-1))
+        //echo((feederLength-2*separationLeftSide)/(magnetPocketsLeftSide-1))
         for(j=[0:1:magnetPocketsLeftSide-1]) {
             //magnet pockets left side
             translate([0,j*((feederLength-2*separationLeftSide)/(magnetPocketsLeftSide-1))+separationLeftSide,0]) {
