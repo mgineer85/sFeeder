@@ -67,4 +67,9 @@ Before printing your feeders make a small test piece to check tolerances & more.
 
 ![Photo](images/parametric_feeder_photo.jpg)
 
+## Scripts
+
+The provided `sFeeder_batch_export`scripts generates the files inside the stl folder.
+
+Take them as a reference for creating scripts for your own needs.
 
