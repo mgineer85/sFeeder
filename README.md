@@ -41,3 +41,30 @@ Before printing your feeders make a small test piece to check tolerances & more.
 
 [thing:2506053](https://www.thingiverse.com/thing:2506053)
 
+## Images
+
+### Parameters
+
+#### Description
+
+![Description 1](images/parametric_feeder_desc.png)
+
+![Description 2](images/parametric_feeder_desc2.png)
+
+#### Cross section
+
+![Cross section](images/sFeederOpenSCAD_magnetPockets.png)
+
+### Creating the stl
+
+![stl creation](images/sFeederOpenSCAD_edited.png)
+
+### Feeder with identifier
+
+![Feeder with identifier](images/gangedFeeder8mm_with_Identifier.jpg)
+
+### Usage
+
+![Photo](images/parametric_feeder_photo.jpg)
+
+
