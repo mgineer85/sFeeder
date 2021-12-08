@@ -1,6 +1,6 @@
 # Parametric SMT Tape Feeder
 
-Parametric Feeder Design, load in OpenSCAD to make yours. 
+Parametric Feeder Design, load in OpenSCAD to make yours.
 
 ## What is it for?
 
@@ -10,7 +10,7 @@ Serves to hold SMT tapes with resistors, capacitors, etc. in place. Designed to 
 ## Features
 
   * parametric design fully adaptable to your needs
-  * width of one feeder is tapeWidth + 3mm, eg. for 8mm tapes the feeder will be 11mm 
+  * width of one feeder is tapeWidth + 3mm, eg. for 8mm tapes the feeder will be 11mm
   * gang multiple feeder in one element
   * fully 3d printable, optimized design for best print results
   * keeps tape in position by slight force causing friction
@@ -28,9 +28,14 @@ Serves to hold SMT tapes with resistors, capacitors, etc. in place. Designed to 
 | Nozzle size  | 0.5 [mm] max |
 | Infill       | 20%          |
 
-### Important note
+### Important notes
 
 **Print in a color contrasting white paper tapes and black plastic tapes**
+
+Before printing your feeders make a small test piece to check tolerances & more.
+
+<img src="images/test.jpg" alt="test" width="500"/>
+
 
 ## Thingiverse
 
