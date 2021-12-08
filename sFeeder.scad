@@ -19,20 +19,32 @@ feederLength=180;
 tapeLayerHeight=22.8;
 //Bank ID: To identify the feeder in OpenPnP unique IDs for each bank are built and embossed into the ganged feeder. -1: no identifier.
 bankID=1; //[-1:1:9]
-//diameter of pockets on the side to put a magnet in
+//Change the starting letter according to ASCII code: 65 -> 'A', 75 -> 'K', 85 -> 'U' and so on.
+startingLetter=65; //[65:1:90]
+//Diameter of pockets on the side to put a magnet in
 magnetDiameter=6;
-//height of the pocket for the magnet
+//Height of the pocket for the magnet
 magnetHeight=3;
+//How many magnet pockets in the right side?
+magnetPocketsRightSide=3; 
+//How many magnet pockets on the left side?
+magnetPocketsLeftSide=4;
 
 /* [advanced] */
 
-//controls the force to keep the tape in place. lower value higher force and though friction
+//Controls the force to keep the tape in place. lower value higher force and though friction
 tapeClearance=-0.3;     // [-0.5:0.05:0.5]
 bodyHeight=6;
 tapeSupportHoleSide=2.8;
 tapeSupportNonHoleSide=0.9;
 
+//Separation from the magnet pocket to the edge, right side
+separationRightSide=24.5;
+//Separation from the magnet pocket to the edge, left side
+separationLeftSide=7.5; 
 
+// Change this value to get a thicker space under the magnet
+layerBelow=0.35;
 
 /* [expert] */
 //higher values make the left arm stronger
@@ -75,21 +87,26 @@ module gang_feeder() {
         }
         
         //magnet pockets
-        for(j=[0:1:2]) {
+        
+        echo((feederLength-2*separationRightSide)/(magnetPocketsRightSide-1))
+        for(j=[0:1:magnetPocketsRightSide-1]) {
             //magnet pockets right side
-            translate([0,j*((feederLength-49)/2)+24.5,0]) {
+            translate([0,j*((feederLength-2*separationRightSide)/(magnetPocketsRightSide-1))+separationRightSide,0]) {
                 translate([(numberOfFeeders)*(tapeWidth+additionalWidth),0,0 ]) {
-                    magnetic_fixation_pocket(0,feederLength/2);
+                    //magnetic_fixation_pocket(0,feederLength/2);
+                    magnetic_fixation_pocket();
                 }
             }
             
         }
         
-        for(j=[0:1:3]) {
-            translate([0,j*((feederLength-15)/3)+7.5,0]) {
-                //magnet pockets left side
+        echo((feederLength-2*separationLeftSide)/(magnetPocketsLeftSide-1))
+        for(j=[0:1:magnetPocketsLeftSide-1]) {
+            //magnet pockets left side
+            translate([0,j*((feederLength-2*separationLeftSide)/(magnetPocketsLeftSide-1))+separationLeftSide,0]) {
                 rotate([0,0,180])
-                    magnetic_fixation_pocket(0,feederLength/2);
+                    //magnetic_fixation_pocket(0,feederLength/2);
+                    magnetic_fixation_pocket();
             }
         }
     }
@@ -196,14 +213,14 @@ module identification_mark(feederNo,_halign,_valign) {
 
     if(bankID!=-1) {
         linear_extrude(height=.91) {
-            text( str(bankID, chr(feederNo+65) ),font=":style=Bold", size=4, valign=_valign, halign=_halign);
+            text( str(bankID, chr(feederNo+startingLetter) ),font=":style=Bold", size=4, valign=_valign, halign=_halign);
         }
     }
                 
 }
 
 module magnetic_fixation_pocket() {
-    layerBelow=0.25;
+    // change 'layerBelow' to get a thicker space under the magnet, 2 layers is ok, check your slicer's settings and preview!. Default: layerBelow=0.25;
     magnetInset=1;
     magnetDiameterOversizedFor3dPrinting=magnetDiameter+0.2;
     
