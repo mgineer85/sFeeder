@@ -10,5 +10,5 @@ do
 	done
 done
 
-openscad -DbankID=1 -DtapeWidth=8 -DnumberOfFeeders=8 -o New_stl/sFeeder_8mm_8ganged_1bankID.stl sFeeder.scad
+openscad -DbankID=1 -DtapeWidth=8 -DnumberOfFeeders=8 -o stl/sFeeder_8mm_8ganged_1bankID.stl sFeeder.scad
 
