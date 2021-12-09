@@ -71,5 +71,5 @@ Before printing your feeders make a small test piece to check tolerances & more.
 
 The provided `sFeeder_batch_export` scripts generate the files inside the `stl` folder.
 
-Take them as a reference for creating scripts for your own needs.
+Don't hesitate to take them as a reference for creating scripts for your own needs.
 
